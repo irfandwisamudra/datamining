@@ -2929,7 +2929,33 @@ f: 8.510375433939908
 </div>
 </div>
 </div>
-<p>Selanjutnya, kita membuat sebuah gambar (figure) dengan ukuran 14x12 inci. Kemudian, kita menambahkan subplot 3D ke dalam gambar tersebut. Titik-titik data ditampilkan dalam warna biru dengan marker bulat, sedangkan titik-titik yang dianggap sebagai outlier ditampilkan dalam warna merah dengan marker X. Sumbu plot diberi label sesuai dengan fitur-fitur yang dimiliki oleh data. Legenda ditambahkan untuk membedakan antara titik-titik data dan outlier. Lalu, plot ditampilkan.</p>
+<p>Terakhir, dilakukan penentuan outlier berdasarkan ambang LOF tertentu. Outlier ditentukan sebagai titik-titik yang memiliki LOF score melebihi ambang tersebut. Titik-titik outlier tersebut kemudian dicetak bersama dengan LOF score mereka dalam urutan dari tertinggi ke terendah.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tentukan ambang LOF untuk menentukan outlier</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mi">14</span>  <span class="c1"># Misalnya, menggunakan ambang 14</span>
+
+<span class="c1"># Temukan indeks dari titik-titik yang dianggap sebagai outlier</span>
+<span class="n">outlier_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lof_scores</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Urutkan outlier berdasarkan LOF score dari tertinggi ke terendah</span>
+<span class="n">sorted_outlier_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">outlier_indices</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">idx</span><span class="p">:</span> <span class="n">lof_scores</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Outlier Points (LOF Score &gt;&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="s2">&quot;):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">sorted_outlier_indices</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s2">&quot;LOF Score:&quot;</span><span class="p">,</span> <span class="n">lof_scores</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Outlier Points (LOF Score &gt; 14 ):
+h LOF Score: 17.926953262498927
+c LOF Score: 16.469981739458444
+</pre></div>
+</div>
+</div>
+</div>
+<p>Untuk melihat visualisasi data, kita dapat membuat sebuah gambar (figure) dengan ukuran 14x12 inci. Kemudian, kita menambahkan subplot 3D ke dalam gambar tersebut. Titik-titik data ditampilkan dalam warna biru dengan marker bulat, sedangkan titik-titik yang dianggap sebagai outlier ditampilkan dalam warna merah dengan marker X. Sumbu plot diberi label sesuai dengan fitur-fitur yang dimiliki oleh data. Legenda ditambahkan untuk membedakan antara titik-titik data dan outlier. Lalu, plot ditampilkan.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot data titik dalam ruang 3D</span>
@@ -2958,51 +2984,14 @@ f: 8.510375433939908
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">IndexError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">line</span> <span class="mi">9</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data Points&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># Plot titik-titik outlier</span>
-<span class="ne">----&gt; </span><span class="mi">9</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">sorted_outlier_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">sorted_outlier_indices</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">sorted_outlier_indices</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> 
-<span class="g g-Whitespace">     </span><span class="mi">10</span>            <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Outlier Points&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1"># Menyesuaikan label sumbu</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Fitur 1&#39;</span><span class="p">)</span>
-
-<span class="ne">IndexError</span>: index 12 is out of bounds for axis 0 with size 10
-</pre></div>
-</div>
-<img alt="_images/775c940fbc193928b1b30b6eb25a0b68322e17534c146219bdce57f1e5be8709.png" src="_images/775c940fbc193928b1b30b6eb25a0b68322e17534c146219bdce57f1e5be8709.png" />
+<img alt="_images/2c81abb78d224b605ccdeaa3773fcc0b777a9469a1fdcba14a561a4409852fa6.png" src="_images/2c81abb78d224b605ccdeaa3773fcc0b777a9469a1fdcba14a561a4409852fa6.png" />
 </div>
 </div>
-<p>Terakhir, dilakukan penentuan outlier berdasarkan ambang LOF tertentu. Outlier ditentukan sebagai titik-titik yang memiliki LOF score melebihi ambang tersebut. Titik-titik outlier tersebut kemudian dicetak bersama dengan LOF score mereka dalam urutan dari tertinggi ke terendah.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tentukan ambang LOF untuk menentukan outlier</span>
-<span class="n">threshold</span> <span class="o">=</span> <span class="mi">14</span>  <span class="c1"># Misalnya, menggunakan ambang 14</span>
-
-<span class="c1"># Temukan indeks dari titik-titik yang dianggap sebagai outlier</span>
-<span class="n">outlier_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lof_scores</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="c1"># Urutkan outlier berdasarkan LOF score dari tertinggi ke terendah</span>
-<span class="n">sorted_outlier_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">outlier_indices</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">idx</span><span class="p">:</span> <span class="n">lof_scores</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Outlier Points (LOF Score &gt;&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="s2">&quot;):&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">sorted_outlier_indices</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s2">&quot;LOF Score:&quot;</span><span class="p">,</span> <span class="n">lof_scores</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Outlier Points (LOF Score &gt; 14 ):
-h LOF Score: 17.926953262498927
-c LOF Score: 16.469981739458444
-</pre></div>
-</div>
-</div>
-</div>
+<p>Jadi, outlier points teratasnya adalah h dan c.</p>
 </section>
 <section id="implementasi-local-outlier-factor-pada-data-iris">
 <h3>Implementasi Local Outlier Factor pada data Iris<a class="headerlink" href="#implementasi-local-outlier-factor-pada-data-iris" title="Link to this heading">#</a></h3>
+<p>Pertama, dalam bagian import, kode menggunakan modul numpy untuk manipulasi data numerik dan NearestNeighbors dari sklearn.neighbors untuk mencari tetangga terdekat dari setiap titik dalam dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -3015,6 +3004,7 @@ c LOF Score: 16.469981739458444
 </div>
 </div>
 </div>
+<p>Selanjutnya, fungsi local_reachability_density(X, k) bertanggung jawab untuk menghitung Local Reachability Density (LRD) untuk setiap titik dalam dataset. Fungsi ini pertama-tama menentukan tetangga terdekat untuk setiap titik menggunakan NearestNeighbors, kemudian menghitung jarak mencapai dari setiap tetangga ke titik yang bersangkutan. Selanjutnya, LRD dihitung sebagai rasio antara jumlah tetangga terdekat dan total jarak mencapai.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fungsi untuk menghitung Local Reachability Density (LRD) suatu titik</span>
@@ -3047,6 +3037,7 @@ c LOF Score: 16.469981739458444
 </div>
 </div>
 </div>
+<p>Kemudian, fungsi local_outlier_factor(X, k) digunakan untuk menghitung Local Outlier Factor (LOF) untuk setiap titik dalam dataset. Fungsi ini memanfaatkan nilai LRD yang dihasilkan oleh fungsi sebelumnya dan menghitung LOF berdasarkan rumus yang diberikan. Proses ini melibatkan iterasi melalui setiap titik, mengakumulasi nilai LRD dan jarak mencapai dari tetangga terdekat, dan kemudian mengalikan keduanya untuk mendapatkan nilai LOF.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fungsi untuk menghitung Local Outlier Factor (LOF)</span>
@@ -3070,6 +3061,7 @@ c LOF Score: 16.469981739458444
 </div>
 </div>
 </div>
+<p>Setelahnya, dataset Iris dari file “Iris.csv” didefinisikan dalam variabel data. Kemudian, dicoba untuk ditampilkan.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_iris_lof</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Iris.csv&#39;</span><span class="p">)</span>
@@ -3198,6 +3190,7 @@ c LOF Score: 16.469981739458444
 <p>150 rows × 5 columns</p>
 </div></div></div>
 </div>
+<p>Menghitung LOF scores menggunakan fungsi local_outlier_factor dengan k=3. LOF scores dicetak dalam urutan dari tertinggi ke terendah menggunakan indeks yang telah diurutkan sebelumnya.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ambil fitur-fitur yang digunakan</span>
@@ -3371,6 +3364,7 @@ Data ke-37: 0.0
 </div>
 </div>
 </div>
+<p>Terakhir, dilakukan penentuan outlier berdasarkan ambang LOF tertentu. Outlier ditentukan sebagai titik-titik yang memiliki LOF score melebihi ambang tersebut. Titik-titik outlier tersebut kemudian dicetak bersama dengan LOF score mereka dalam urutan dari tertinggi ke terendah.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tentukan ambang LOF untuk menentukan outlier</span>
