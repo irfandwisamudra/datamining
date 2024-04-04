@@ -4719,13 +4719,19 @@ Data ke-120, LOF Score: 18.76, Outlier: Yes
 <h3>Perhitungan Probabilitas Prior Setiap Data Train<a class="headerlink" href="#perhitungan-probabilitas-prior-setiap-data-train" title="Link to this heading">#</a></h3>
 <p>Hitung probabilitas prior masing-masing data pada data train.</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}\begin{aligned}
-&amp; P(a) = \frac{n(a)}{N} \\\end{split}\\\begin{split}&amp; P(a) = \text{Probabilitas Prior} \\
-&amp; n(a) = \text{Banyaknya record data train pada suatu kelas (40)} \\
-&amp; N = \text{Total banyaknya record data train (40+40+40=120)} \\\end{split}\\\begin{split}&amp; P(\text{Iris-setosa}) = \frac{40}{120} = 0.333333333 \\
-&amp; P(\text{Iris-versicolor}) = \frac{40}{120} = 0.333333333 \\
-&amp; P(\text{Iris-virginica}) = \frac{40}{120} = 0.333333333 \\\end{split}\\\end{aligned}
-\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}\begin{split}
+P(a) = \frac{n(a)}{N} \\\end{split}\\\begin{split}P(a) = \text{Probabilitas Prior} \\
+n(a) = \text{Banyaknya record data train pada suatu kelas (40)} \\
+N = \text{Total banyaknya record data train (40+40+40=120)} \\
+\end{split}\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+P(\text{Iris-setosa}) = \frac{40}{120} = 0.333333333 \\
+P(\text{Iris-versicolor}) = \frac{40}{120} = 0.333333333 \\
+P(\text{Iris-virginica}) = \frac{40}{120} = 0.333333333
+\end{aligned}
+\end{split}\]</div>
 </section>
 <section id="perhitungan-mean-dan-standar-deviasi">
 <h3>Perhitungan Mean dan Standar Deviasi<a class="headerlink" href="#perhitungan-mean-dan-standar-deviasi" title="Link to this heading">#</a></h3>
